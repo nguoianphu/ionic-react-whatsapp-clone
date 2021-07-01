@@ -34,5 +34,17 @@ ionic serve
 
 Alternatively, you can add the iOS, Android platform and run natively.
 
+
+```javascript
+npx cap add android
+npx cap sync
+cd android
+./gradlew assembleDebug --stacktrace
+./gradlew assemble
+./gradlew bundleRelease
+```
+
+Run ```npx cap sync``` to update folder ```android``` whenever you make changes.
+
 # Are you on Twitter? Lets connect [@93alan](https://twitter.com/93alan)
 # Have you checked out Ionic React Hub yet? [Ionic React Hub](https://ionicreacthub.com)
