@@ -138,8 +138,8 @@ jobs:
             cd $GITHUB_WORKSPACE/android
             export DATE=$(date +'DATE_%Y_%m_%d_%H%M%S')
             export GIT_COMMIT=COMMIT_$(git log --format=%h -1)
-            export APP_NAME=$(cat www/app/build.gradle | grep applicationId  | cut -d '"' -f2 | grep -o '[^.]*$')
-            export APP_VERSION_CURRENT=$(cat www/app/build.gradle | grep versionName| cut -d '"' -f2)
+            export APP_NAME=$(cat app/build.gradle | grep applicationId  | cut -d '"' -f2 | grep -o '[^.]*$')
+            export APP_VERSION_CURRENT=$(cat app/build.gradle | grep versionName| cut -d '"' -f2)
             export APK_NAME=${APP_NAME}-${APP_VERSION_CURRENT}-${DATE}-${GIT_COMMIT}
             export APK_NAME=${APK_NAME// /}
             export TAG=${TAG:-${APK_NAME}}
