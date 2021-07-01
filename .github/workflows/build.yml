@@ -56,14 +56,16 @@ jobs:
       - name: Build APKs
         working-directory: ./android
         run: |
-          ./gradlew assembleWithoutNNUEDebug
-          ./gradlew assembleWithNNUEDebug
+          ./gradlew assembleDebug --stacktrace
+          ./gradlew assemble
+          ./gradlew bundleRelease
       - uses: actions/upload-artifact@v2
         with:
-          name: debugApks
+          name: allApksAab
           path: |
-            ./android/app/build/outputs/apk/withoutNNUE/debug/
-            ./android/app/build/outputs/apk/withNNUE/debug/
+            ./android/app/build/outputs/apk/debug/
+            ./android/app/build/outputs/apk/release/
+            ./android/app/build/outputs/bundle/release/
       - name: Cleanup Gradle Cache
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
         # Restoring these files from a GitHub Actions cache might cause problems for future builds.
