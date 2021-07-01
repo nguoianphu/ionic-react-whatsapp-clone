@@ -29,6 +29,7 @@ If you'd like to support, you can <a className="link" href="https://www.buymeaco
 
 ```javascript
 npm install
+npm run build
 ionic serve
 ```
 
@@ -36,10 +37,12 @@ Alternatively, you can add the iOS, Android platform and run natively.
 
 
 ```javascript
+npm install
+npm run build
 npx cap add android
 npx cap sync
 cd android
-./gradlew assembleDebug --stacktrace
+./gradlew assembleDebug
 ./gradlew assemble
 ./gradlew bundleRelease
 ```
