@@ -40,8 +40,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - name: Add android into capacitor
+        run: |
+         npx cap init
+         npx cap add android
       - name: Sync android capacitor
-        run: npx cap update android
+        run: npx cap sync
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
