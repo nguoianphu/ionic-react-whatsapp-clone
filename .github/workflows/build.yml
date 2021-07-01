@@ -55,9 +55,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Prepare build
-        working-directory: ./node_modules/capacitor-stockfish/stockfish/src
-        run: make net
       - name: Build APKs
         working-directory: ./android
         run: |
