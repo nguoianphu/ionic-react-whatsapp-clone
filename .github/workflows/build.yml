@@ -73,8 +73,8 @@ jobs:
         env:
          MY_ZIP_PASSWORD: ${{ secrets.MY_ZIP_PASSWORD }}
          BUILD_TOOLS: ${{env.BUILD_TOOLS}}
+        working-directory: ./android
         run: |
-         cd $GITHUB_WORKSPACE
          echo "Get latest Android build tool version"
          export BUILD_TOOLS=$(ls $ANDROID_SDK_ROOT/build-tools | tail -1)
          echo "BUILD_TOOLS=$BUILD_TOOLS"
@@ -101,26 +101,28 @@ jobs:
                 -keystore keys/my-android-release-key.keystore \
                 -alias my-android-release-key \
                 -file keys/my-android-release-upload-certificat.pem
+                
             echo "Sign the APK with the key we just created"
-            # cd $ANDROID_SDK_ROOT/build-tools/$BUILD_TOOLS
+            cd $ANDROID_SDK_ROOT/build-tools/$BUILD_TOOLS
             echo "Align the unsigned APK using zipalign"
-            .${ANDROID_SDK_ROOT}/build-tools/$BUILD_TOOLS/zipalign -v 4 \
-                app/build/outputs/apk/release/app-release-unsigned.apk \
-                app/build/outputs/apk/release/app-release-unsigned-aligned.apk
+            ./zipalign -v 4 \
+                $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/app-release-unsigned.apk \
+                $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/app-release-unsigned-aligned.apk
             echo "Sign your APK with your private key using apksigner"
-            .${ANDROID_SDK_ROOT}/build-tools/$BUILD_TOOLS/apksigner sign \
-                --ks keys/my-android-release-key.keystore \
+            ./apksigner sign \
+                --ks $GITHUB_WORKSPACE/android/keys/my-android-release-key.keystore \
                 --ks-key-alias my-android-release-key \
                 --ks-pass pass:${MY_ZIP_PASSWORD} \
                 --key-pass pass:${MY_ZIP_PASSWORD} \
-                --out app/build/outputs/apk/release/app-release.apk \
-                app/build/outputs/apk/release/app-release-unsigned-aligned.apk
+                --out $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/app-release.apk \
+                $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/app-release-unsigned-aligned.apk
             echo "Verify that your APK is signed \
                     to confirm that an APK's signature \
                     will be verified successfully \
                     on all versions of the Android platform supported by the APK"
-            .${ANDROID_SDK_ROOT}/build-tools/$BUILD_TOOLS/apksigner verify --verbose --print-certs app/build/outputs/apk/release/app-release.apk
-            cd $GITHUB_WORKSPACE
+            ./apksigner verify --verbose --print-certs $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/app-release.apk
+            
+            cd $GITHUB_WORKSPACE/android
             echo "Sign Android App Bundle by jarsigner"
             echo "https://medium.com/androiddevelopers/building-your-first-app-bundle-bbcd228bf631"
             jarsigner -storepass ${MY_ZIP_PASSWORD} \
@@ -129,6 +131,33 @@ jobs:
                  app/build/outputs/bundle/release/app-release.aab my-android-release-key
             echo "zip keys and certificates with password"
             7z a -tzip -p${MY_ZIP_PASSWORD} app/build/outputs/apk/release/keys.zip -r keys
+
+      - name: Create tag
+        if: runner.os != 'windows'
+        run: |
+            cd $GITHUB_WORKSPACE/android
+            export DATE=$(date +'DATE_%Y_%m_%d_%H%M%S')
+            export GIT_COMMIT=COMMIT_$(git log --format=%h -1)
+            export APP_NAME=$(cat www/app/build.gradle | grep applicationId  | cut -d '"' -f2 | grep -o '[^.]*$')
+            export APP_VERSION_CURRENT=$(cat www/app/build.gradle | grep versionName| cut -d '"' -f2)
+            export APK_NAME=${APP_NAME}-${APP_VERSION_CURRENT}-${DATE}-${GIT_COMMIT}
+            export APK_NAME=${APK_NAME// /}
+            export TAG=${TAG:-${APK_NAME}}
+            git tag ${TAG// /}
+            git tag -l
+            echo "TAG=$TAG" >> $GITHUB_ENV
+
+      - name: Release
+        if: runner.os != 'windows'
+        uses: softprops/action-gh-release@v1
+        with:
+        tag_name: ${{env.TAG}}
+        files: |
+          ./android/app/build/outputs/apk/release/keys.zip
+          ./android/app/build/outputs/apk/release/app-release-unsigned.apk
+          ./android/app/build/outputs/apk/release/app-release.apk
+          ./android/app/build/outputs/apk/debug/app-debug.apk
+          ./android/app/build/outputs/bundle/release/app-release.aab
 
       - uses: actions/upload-artifact@v2
         with:
