@@ -151,8 +151,8 @@ jobs:
         if: runner.os != 'windows'
         uses: softprops/action-gh-release@v1
         with:
-        tag_name: ${{env.TAG}}
-        files: |
+         tag_name: ${{env.TAG}}
+         files: |
           ./android/app/build/outputs/apk/release/keys.zip
           ./android/app/build/outputs/apk/release/app-release-unsigned.apk
           ./android/app/build/outputs/apk/release/app-release.apk
