@@ -1,4 +1,10 @@
 # ionic-react-whatsapp-clone
+
+
+[![Downloads](https://img.shields.io/github/downloads/nguoianphu/ionic-react-whatsapp-clone/total.svg?style=flat)](https://GitHub.com/nguoianphu/ionic-react-whatsapp-clone/releases/) [![Latest release](https://img.shields.io/github/release/nguoianphu/ionic-react-whatsapp-clone.svg?style=flat)](https://GitHub.com/nguoianphu/ionic-react-whatsapp-clone/releases/) [![Site](https://github.com/nguoianphu/ionic-react-whatsapp-clone/actions/workflows/build.yml/badge.svg)](https://github.com/nguoianphu/ionic-react-whatsapp-clone/actions/workflows/build.yml) [![CodeQL](https://github.com/nguoianphu/ionic-react-whatsapp-clone/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/nguoianphu/ionic-react-whatsapp-clone/actions/workflows/codeql-analysis.yml) [![Publish (Electron)](<https://github.com/nguoianphu/ionic-react-whatsapp-clone/actions/workflows/Publish%20(Electron).yml/badge.svg?branch=main>)](<https://github.com/nguoianphu/ionic-react-whatsapp-clone/actions/workflows/Publish%20(Electron).yml>) [![Publish (Capacitor - Android)](<https://github.com/nguoianphu/ionic-react-whatsapp-clone/actions/workflows/Publish%20(Capacitor%20-%20Android).yml/badge.svg>)](<https://github.com/nguoianphu/ionic-react-whatsapp-clone/actions/workflows/Publish%20(Capacitor%20-%20Android).yml>) [![CodeFactor](https://www.codefactor.io/repository/github/nguoianphu/ionic-react-whatsapp-clone/badge/next)](https://www.codefactor.io/repository/github/nguoianphu/ionic-react-whatsapp-clone/overview/next)
+
+---
+
 An example of a WhatsApp UI clone using Ionic React (Dark Mode, IOS only... for now)
 <br />
 If you'd like to support, you can <a className="link" href="https://www.buymeacoffee.com/ionicreacthub" target="_blank" rel="noopener">buy me a coffee</a> ☕️
